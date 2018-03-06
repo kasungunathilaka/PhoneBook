@@ -1,0 +1,22 @@
+<div class="table">
+  <table class="table">
+    <thead>
+      <th></th>
+      <th>Contacts</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let contact of contacts">
+        <td></td>
+        <td>{{ contact.firstName }} {{ contact.lastName}}
+        <br>&nbsp;
+        Mobile: {{ contact.mobilePhone }}
+        <br>&nbsp;
+        Home: {{ contact.homePhone }}</td>
+        <td>
+          <input type="button" class="btn btn-sm btn-info" value=">">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
