@@ -1,0 +1,11 @@
+services:
+  phonebook.webapi:
+    build:
+      context: D:\Workspace\PhoneBook
+      dockerfile: PhoneBook.WebAPI/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    image: phonebook.webapi
+    ports:
+    - 80/tcp
+version: '3.0'

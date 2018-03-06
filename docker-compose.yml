@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  phonebook.webapi:
+    image: phonebook.webapi
+    build:
+      context: .
+      dockerfile: PhoneBook.WebAPI/Dockerfile
+    depends_on:
+          - db
+  db:
+      image: "microsoft/mssql-server-linux:latest"
+      environment:
+          SA_PASSWORD: "root"
+          ACCEPT_EULA: "Y"
+      expose:
+        - 1433

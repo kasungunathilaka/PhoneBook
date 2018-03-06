@@ -1,0 +1,1 @@
+D:\Workspace\PhoneBook\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache

@@ -1,0 +1,11 @@
+D:\Workspace\PhoneBook\PhoneBook.Persistence\bin\Debug\netcoreapp2.0\PhoneBook.Persistence.deps.json
+D:\Workspace\PhoneBook\PhoneBook.Persistence\bin\Debug\netcoreapp2.0\PhoneBook.Persistence.dll
+D:\Workspace\PhoneBook\PhoneBook.Persistence\bin\Debug\netcoreapp2.0\PhoneBook.Persistence.pdb
+D:\Workspace\PhoneBook\PhoneBook.Persistence\bin\Debug\netcoreapp2.0\PhoneBook.Contract.dll
+D:\Workspace\PhoneBook\PhoneBook.Persistence\bin\Debug\netcoreapp2.0\PhoneBook.Contract.pdb
+D:\Workspace\PhoneBook\PhoneBook.Persistence\obj\Debug\netcoreapp2.0\PhoneBook.Persistence.csprojResolveAssemblyReference.cache
+D:\Workspace\PhoneBook\PhoneBook.Persistence\obj\Debug\netcoreapp2.0\PhoneBook.Persistence.csproj.CoreCompileInputs.cache
+D:\Workspace\PhoneBook\PhoneBook.Persistence\obj\Debug\netcoreapp2.0\PhoneBook.Persistence.AssemblyInfoInputs.cache
+D:\Workspace\PhoneBook\PhoneBook.Persistence\obj\Debug\netcoreapp2.0\PhoneBook.Persistence.AssemblyInfo.cs
+D:\Workspace\PhoneBook\PhoneBook.Persistence\obj\Debug\netcoreapp2.0\PhoneBook.Persistence.dll
+D:\Workspace\PhoneBook\PhoneBook.Persistence\obj\Debug\netcoreapp2.0\PhoneBook.Persistence.pdb
