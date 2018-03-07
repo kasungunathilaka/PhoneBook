@@ -30,7 +30,7 @@ export class ContactService {
     public GetContactById(id: string): Observable<ContactDetails> {
         const url = `${this.contactsUrl}/${id}`;
         return this.http.get(url)
-            .map((res: Response) => <ContactDetails[]>res.json())
+            .map((res: Response) => <ContactDetails>res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
