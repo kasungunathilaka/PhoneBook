@@ -6,4 +6,3 @@ D:\Workspace\PhoneBook\PhoneBook.Contract\obj\Debug\netcoreapp2.0\PhoneBook.Cont
 D:\Workspace\PhoneBook\PhoneBook.Contract\obj\Debug\netcoreapp2.0\PhoneBook.Contract.AssemblyInfo.cs
 D:\Workspace\PhoneBook\PhoneBook.Contract\obj\Debug\netcoreapp2.0\PhoneBook.Contract.dll
 D:\Workspace\PhoneBook\PhoneBook.Contract\obj\Debug\netcoreapp2.0\PhoneBook.Contract.pdb
-D:\Workspace\PhoneBook\PhoneBook.Contract\obj\Debug\netcoreapp2.0\PhoneBook.Contract.csprojResolveAssemblyReference.cache

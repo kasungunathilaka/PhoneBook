@@ -26,33 +26,37 @@ namespace PhoneBook.Business.Services
             List<ContactDTO> contactDetails = new List<ContactDTO>();
             List<Customer> customers = await _dbConext.Customers.ToListAsync();
 
-            foreach (var customer in customers)
+            if (customers.Count > 0)
             {
-                if (customer != null)
+                foreach (var customer in customers)
                 {
-                    ContactDetails details = await _dbConext.ContactDetails.FirstOrDefaultAsync(d => d.CustomerId.Equals(customer.Id));
-                    Address address = await _dbConext.Address.FirstOrDefaultAsync(a => a.ContactDetailsId.Equals(details.Id));
-
-                    var contact = new ContactDTO
+                    if (customer != null)
                     {
-                        CustomerId = customer.Id.ToString(),
-                        FirstName = customer.FirstName,
-                        LastName = customer.LastName,
-                        Gender = customer.Gender,
-                        Email = details.Email,
-                        MobilePhone = details.MobilePhone,
-                        HomePhone = details.HomePhone,
-                        FacebookId = details.FacebookId,
-                        ContactDetailsId = details.Id.ToString(),
-                        Street = address.Street,
-                        City = address.City,
-                        Province = address.Province,
-                        ZipCode = address.ZipCode
-                    };
-                    contactDetails.Add(contact);
-                }               
+                        ContactDetails details = await _dbConext.ContactDetails.FirstOrDefaultAsync(d => d.CustomerId.Equals(customer.Id));
+                        Address address = await _dbConext.Address.FirstOrDefaultAsync(a => a.ContactDetailsId.Equals(details.Id));
+
+                        var contact = new ContactDTO
+                        {
+                            CustomerId = customer.Id.ToString(),
+                            FirstName = customer.FirstName,
+                            LastName = customer.LastName,
+                            Gender = customer.Gender,
+                            Email = details.Email,
+                            MobilePhone = details.MobilePhone,
+                            HomePhone = details.HomePhone,
+                            FacebookId = details.FacebookId,
+                            ContactDetailsId = details.Id.ToString(),
+                            Street = address.Street,
+                            City = address.City,
+                            Province = address.Province,
+                            ZipCode = address.ZipCode
+                        };
+                        contactDetails.Add(contact);
+                    }
+                }
+                return contactDetails;
             }
-            return contactDetails;
+            return null;            
         }
 
         public async Task<List<string>> GetAllContactNames()
@@ -60,15 +64,19 @@ namespace PhoneBook.Business.Services
             List<string> contactNames = new List<string>();
             List<Customer> customers = await _dbConext.Customers.ToListAsync();
 
-            foreach (var customer in customers)
+            if (customers.Count > 0)
             {
-                if (customer != null)
+                foreach (var customer in customers)
                 {
-                    string name = customer.FirstName +" "+ customer.LastName;
-                    contactNames.Add(name);
+                    if (customer != null)
+                    {
+                        string name = customer.FirstName + " " + customer.LastName;
+                        contactNames.Add(name);
+                    }
                 }
+                return contactNames;
             }
-            return contactNames;
+            return null;            
         }
 
         public async Task<ContactDTO> GetContactById(string id)
@@ -194,12 +202,12 @@ namespace PhoneBook.Business.Services
             foreach (var word in words)
             {
                 List<Customer> resultfirst = await _dbConext.Customers.Where(c => c.FirstName.Contains(word)).ToListAsync();
-                if (resultfirst != null)
+                if (resultfirst.Count > 0)
                 {
                     customers.AddRange(resultfirst);
                 }
                 List<Customer> resultLast = await _dbConext.Customers.Where(c => c.LastName.Contains(word)).ToListAsync();
-                if (resultLast != null)
+                if (resultLast.Count > 0)
                 {
                     customers.AddRange(resultLast);
                 }
@@ -236,34 +244,43 @@ namespace PhoneBook.Business.Services
                 }
                 return contactDetails;
             }
-
             return null;            
         }
 
         public async Task<List<ContactDTO>> SearchContactByNumber(string number)
         {
-            List<ContactDTO> contactDetails = await this.GetAllContacts();
+            List<ContactDTO> contactDetails = new List<ContactDTO>();
+            List<ContactDetails> details = new List<ContactDetails>();
 
-            List<ContactDTO> filteredCustomers = new List<ContactDTO>();
-
-            if (contactDetails.Count > 0)
+            string[] words = number.Split(' ');
+            foreach (var word in words)
             {
-                foreach (ContactDTO contact in contactDetails)
+                List<ContactDetails> resultMobile = await _dbConext.ContactDetails.Where(c => c.MobilePhone.Contains(word)).ToListAsync();
+                if (resultMobile.Count > 0)
                 {
-                    if (contact.MobilePhone.Contains(number) || contact.HomePhone.Contains(number))
-                    {
-                        filteredCustomers.Add(contact);
-                    }
+                    details.AddRange(resultMobile);
+                }
+                List<ContactDetails> resultHome = await _dbConext.ContactDetails.Where(c => c.HomePhone.Contains(word)).ToListAsync();
+                if (resultHome.Count > 0)
+                {
+                    details.AddRange(resultHome);
                 }
             }
 
-            if (filteredCustomers.Count > 0)
+            if (details.Count > 0)
             {
-                List<ContactDTO> uniqueCustomers = filteredCustomers.Distinct().ToList();
-                return uniqueCustomers;
+                List<ContactDetails> uniqueDetails = details.Distinct().ToList();
+                foreach (var detail in uniqueDetails)
+                {
+                    if (detail != null)
+                    {
+                        ContactDTO contact = await GetContactById(detail.CustomerId.ToString());
+                        contactDetails.Add(contact);
+                    }
+                }
+                return contactDetails;
             }
-
-            return null;            
+            return null;
         }
     }
 }

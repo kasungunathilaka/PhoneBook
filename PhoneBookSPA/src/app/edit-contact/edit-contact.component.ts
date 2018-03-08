@@ -86,12 +86,12 @@ export class EditContactComponent implements OnInit {
           //console.log('Contact Edited.');
           //console.log(editedContact);            
           this._toastrService.success('Contact Edited Successfully.', '');
-          this._router.navigate(['']);
+          this._router.navigate(['/#']);
         },
         error => {
           console.log(error);
           this._toastrService.error('Contact Edition Failed.', 'Error');
     });     
   }
-  
+
 }
