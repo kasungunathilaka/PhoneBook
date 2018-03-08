@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { ContactDetails } from '../models/contact-details';
 import { ContactService } from '../services/contact.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrServices } from '../services/toastr.service';
 
 @Component({
   selector: 'app-contact-details',
@@ -25,6 +27,7 @@ export class ContactDetailsComponent implements OnInit {
   zipCode : string;
 
   constructor(private _contactService: ContactService, 
+    private _toastrService: ToastrServices,
     private _route: ActivatedRoute,
     private _router: Router) { }
 
@@ -51,14 +54,29 @@ export class ContactDetailsComponent implements OnInit {
           this.city = this.contactDetails.city;
           this.province = this.contactDetails.province;
           this.zipCode = this.contactDetails.zipCode;
-          console.log(this.contactDetails);
+          //console.log(this.contactDetails);
         },
       error => {
           console.log(error);
-      })
+    });
   }
 
   editDetails(id) {
     this._router.navigate(['editContact/', id]);
   }
+
+  deleteContact(id) {
+    this._contactService.DeleteContact(id)
+      .subscribe(
+        result => {
+          //console.log('Contact Deleted.');           
+          this._toastrService.success('Contact Deleted Successfully.', '');
+          this._router.navigate(['']);
+        },
+        error => {
+          console.log(error);
+          this._toastrService.error('Contact Deletion Failed.', 'Error');
+    });     
+  }
+
 }

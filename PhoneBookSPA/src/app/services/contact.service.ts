@@ -34,6 +34,20 @@ export class ContactService {
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
+    public SearchContact(tag: string): Observable<ContactDetails[]> {
+        const url = `${this.contactsUrl}/search/${tag}`;
+        return this.http.get(url)
+            .map((res: Response) => <ContactDetails[]>res.json())
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    public getAllContactNames(): Observable<string[]> {
+        const url = `${this.contactsUrl}/names`;
+        return this.http.get(url)
+            .map((res: Response) => <string[]>res.json())
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
     public AddContact(addedContact: ContactDetails): Observable<ContactDetails> {
         let bodyString = JSON.stringify(addedContact);
         return this.http.post(this.contactsUrl, bodyString, this.options)

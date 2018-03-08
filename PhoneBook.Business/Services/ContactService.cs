@@ -55,14 +55,30 @@ namespace PhoneBook.Business.Services
             return contactDetails;
         }
 
-        public ContactDTO GetContactById(string id)
+        public async Task<List<string>> GetAllContactNames()
         {
-            Customer customer = _dbConext.Customers.FirstOrDefault(c => c.Id.ToString().Equals(id));
+            List<string> contactNames = new List<string>();
+            List<Customer> customers = await _dbConext.Customers.ToListAsync();
+
+            foreach (var customer in customers)
+            {
+                if (customer != null)
+                {
+                    string name = customer.FirstName +" "+ customer.LastName;
+                    contactNames.Add(name);
+                }
+            }
+            return contactNames;
+        }
+
+        public async Task<ContactDTO> GetContactById(string id)
+        {
+            Customer customer = await _dbConext.Customers.FirstOrDefaultAsync(c => c.Id.ToString().Equals(id));
 
             if (customer != null)
             {
-                ContactDetails details = _dbConext.ContactDetails.FirstOrDefault(d => d.CustomerId.Equals(customer.Id));
-                Address address = _dbConext.Address.FirstOrDefault(a => a.ContactDetailsId.Equals(details.Id));
+                ContactDetails details = await _dbConext.ContactDetails.FirstOrDefaultAsync(d => d.CustomerId.Equals(customer.Id));
+                Address address = await _dbConext.Address.FirstOrDefaultAsync(a => a.ContactDetailsId.Equals(details.Id));
 
                 ContactDTO contact = new ContactDTO
                 {
@@ -125,7 +141,7 @@ namespace PhoneBook.Business.Services
 
         public async Task DeleteContact(string id)
         {
-            ContactDTO contact = GetContactById(id);
+            ContactDTO contact = await GetContactById(id);
             Customer customer = _dbConext.Customers.FirstOrDefault(c => c.Id.ToString().Equals(contact.CustomerId));
             ContactDetails details = _dbConext.ContactDetails.FirstOrDefault(d => d.Id.ToString().Equals(contact.ContactDetailsId));
             Address address = _dbConext.Address.FirstOrDefault(a => a.ContactDetailsId.ToString().Equals(contact.ContactDetailsId));
@@ -141,7 +157,7 @@ namespace PhoneBook.Business.Services
 
         public async Task EditContact(string id, ContactDTO editedContact)
         {
-            ContactDTO contact = GetContactById(id);
+            ContactDTO contact = await GetContactById(id);
             Customer customer = _dbConext.Customers.FirstOrDefault(c => c.Id.ToString().Equals(contact.CustomerId));
             ContactDetails details = _dbConext.ContactDetails.FirstOrDefault(d => d.Id.ToString().Equals(contact.ContactDetailsId));
             Address address = _dbConext.Address.FirstOrDefault(a => a.ContactDetailsId.ToString().Equals(contact.ContactDetailsId));
@@ -169,5 +185,85 @@ namespace PhoneBook.Business.Services
             }
         }
 
+        public async Task<List<ContactDTO>> SearchContactByName(string name)
+        {
+            List<ContactDTO> contactDetails = new List<ContactDTO>();
+            List<Customer> customers = new List<Customer>();
+
+            string[] words = name.Split(' ');
+            foreach (var word in words)
+            {
+                List<Customer> resultfirst = await _dbConext.Customers.Where(c => c.FirstName.Contains(word)).ToListAsync();
+                if (resultfirst != null)
+                {
+                    customers.AddRange(resultfirst);
+                }
+                List<Customer> resultLast = await _dbConext.Customers.Where(c => c.LastName.Contains(word)).ToListAsync();
+                if (resultLast != null)
+                {
+                    customers.AddRange(resultLast);
+                }
+            }
+
+            if (customers.Count > 0)
+            {
+                List<Customer> uniqueCustomers = customers.Distinct().ToList();
+                foreach (var customer in uniqueCustomers)
+                {
+                    if (customer != null)
+                    {
+                        ContactDetails details = await _dbConext.ContactDetails.FirstOrDefaultAsync(d => d.CustomerId.Equals(customer.Id));
+                        Address address = await _dbConext.Address.FirstOrDefaultAsync(a => a.ContactDetailsId.Equals(details.Id));
+
+                        var contact = new ContactDTO
+                        {
+                            CustomerId = customer.Id.ToString(),
+                            FirstName = customer.FirstName,
+                            LastName = customer.LastName,
+                            Gender = customer.Gender,
+                            Email = details.Email,
+                            MobilePhone = details.MobilePhone,
+                            HomePhone = details.HomePhone,
+                            FacebookId = details.FacebookId,
+                            ContactDetailsId = details.Id.ToString(),
+                            Street = address.Street,
+                            City = address.City,
+                            Province = address.Province,
+                            ZipCode = address.ZipCode
+                        };
+                        contactDetails.Add(contact);
+                    }
+                }
+                return contactDetails;
+            }
+
+            return null;            
+        }
+
+        public async Task<List<ContactDTO>> SearchContactByNumber(string number)
+        {
+            List<ContactDTO> contactDetails = await this.GetAllContacts();
+
+            List<ContactDTO> filteredCustomers = new List<ContactDTO>();
+
+            if (contactDetails.Count > 0)
+            {
+                foreach (ContactDTO contact in contactDetails)
+                {
+                    if (contact.MobilePhone.Contains(number) || contact.HomePhone.Contains(number))
+                    {
+                        filteredCustomers.Add(contact);
+                    }
+                }
+            }
+
+            if (filteredCustomers.Count > 0)
+            {
+                List<ContactDTO> uniqueCustomers = filteredCustomers.Distinct().ToList();
+                return uniqueCustomers;
+            }
+
+            return null;            
+        }
     }
 }

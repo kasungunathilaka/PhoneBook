@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContactDetails } from '../models/contact-details';
 import { ContactService } from '../services/contact.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-index',
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class IndexComponent implements OnInit {
   contacts: ContactDetails[];
+
   constructor(private _contactService: ContactService, private _router: Router ) { }
 
   ngOnInit() {
@@ -29,6 +31,6 @@ export class IndexComponent implements OnInit {
 
   getDetails(id) {
     this._router.navigate(['contactDetails/', id]);
-  }
-
+  }  
+  
 }

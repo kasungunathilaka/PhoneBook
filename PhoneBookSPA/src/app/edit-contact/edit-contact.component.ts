@@ -58,7 +58,7 @@ export class EditContactComponent implements OnInit {
           this.city = this.contactToEdit.city;
           this.province = this.contactToEdit.province;
           this.zipCode = this.contactToEdit.zipCode;
-          console.log(this.contactToEdit);
+          //console.log(this.contactToEdit);
         },
       error => {
           console.log(error);
@@ -67,6 +67,7 @@ export class EditContactComponent implements OnInit {
 
   onEditButtonClick(contactForm: NgForm){
     var editedContact = new ContactDetails();
+
     editedContact.firstName = contactForm.controls['firstName'].value;
     editedContact.lastName = contactForm.controls['lastName'].value;
     editedContact.gender = contactForm.controls['gender'].value;
@@ -80,18 +81,17 @@ export class EditContactComponent implements OnInit {
     editedContact.zipCode = contactForm.controls['zipcode'].value;
 
     this._contactService.EditContact(this.contactToEdit.customerId, editedContact)
-        .subscribe(
-          result => {
-            console.log('Contact Edited.');
-            console.log(editedContact);            
-            this._toastrService.success('Contact Edited Successfully.', '');
-          },
-          error => {
-            console.log(error);
-            this._toastrService.error('Contact Edition Failed.', 'Error');
-          }); 
-
-    this._router.navigate(['']);
- }
-
+      .subscribe(
+        result => {
+          //console.log('Contact Edited.');
+          //console.log(editedContact);            
+          this._toastrService.success('Contact Edited Successfully.', '');
+          this._router.navigate(['']);
+        },
+        error => {
+          console.log(error);
+          this._toastrService.error('Contact Edition Failed.', 'Error');
+    });     
+  }
+  
 }

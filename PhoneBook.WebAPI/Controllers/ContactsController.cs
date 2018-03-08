@@ -24,7 +24,7 @@ namespace PhoneBook.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllContactsAsync()
+        public async Task<IActionResult> GetAllContacts()
         {
             try
             {
@@ -44,13 +44,34 @@ namespace PhoneBook.WebAPI.Controllers
             return BadRequest("Could not found any contacts.");
         }
 
+        [HttpGet("names")]
+        public async Task<IActionResult> GetAllContactNames()
+        {
+            try
+            {
+                List<string> contactNames = new List<string>();
+                contactNames = await _service.GetAllContactNames();
+
+                if (contactNames == null)
+                {
+                    return NotFound("Could not found any contact.");
+                }
+                return Ok(contactNames);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An exception occurred while getting contacts: {ex.Message}");
+            }
+            return BadRequest("Could not found any contacts.");
+        }
+
         [HttpGet("{id}")]
-        public IActionResult GetContactById(string id)
+        public async Task<IActionResult> GetContactById(string id)
         {
             try
             {
                 ContactDTO contact = new ContactDTO();
-                contact = _service.GetContactById(id);
+                contact = await _service.GetContactById(id);
 
                 if (contact == null)
                 {
@@ -65,13 +86,49 @@ namespace PhoneBook.WebAPI.Controllers
             return BadRequest("Could not found any contact.");
         }
 
+        [HttpGet("search/{tag}")]
+        public async Task<IActionResult> SearchContact(string tag)
+        {
+            try
+            {
+                List<ContactDTO> contacts = new List<ContactDTO>();
+                List<ContactDTO> searchByName = await _service.SearchContactByName(tag);
+                List<ContactDTO> searchByNumber = await _service.SearchContactByNumber(tag);
+
+                if (searchByName != null)
+                {
+                    contacts.AddRange(searchByName);
+                }
+                if (searchByNumber != null)
+                {
+                    contacts.AddRange(searchByNumber);
+                }
+
+                if (contacts != null)
+                {
+                    return Ok(contacts);
+                }
+                return NotFound("Could not found any contact.");
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An exception occurred while getting contacts: {ex.Message}");
+            }
+            return BadRequest("Could not found any contacts.");
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> AddContact([FromBody]ContactDTO addedContact)
         {
             try
             {
-                await _service.AddContact(addedContact);
-                return Ok("New contact Added.");
+                if (addedContact != null)
+                {
+                    await _service.AddContact(addedContact);
+                    return Ok("New contact Added.");
+                }              
             }
             catch (Exception ex)
             {

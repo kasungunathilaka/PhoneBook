@@ -77,7 +77,12 @@
         </div>
       </div>
 
-      <button type="submit" style="float: right" class="btn btn-secondary btn-sm" (click)="editDetails(customerId)">Edit Contact</button>
+      <div style="float: right">
+        <button type="submit" class="btn btn-info btn-sm" (click)="editDetails(customerId)">Edit Contact</button>
+        &nbsp;
+        <button type="button" class="btn btn-danger btn-sm" (click)="deleteContact(customerId)">Delete Contact</button>
+      </div>
+      
     </div>
   </div>
   
