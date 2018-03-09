@@ -1,17 +1,8 @@
 services:
-  db:
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: root
-    expose:
-    - '1433'
-    image: microsoft/mssql-server-linux:latest
   phonebook.webapi:
     build:
       context: D:\Workspace\PhoneBook
       dockerfile: PhoneBook.WebAPI/Dockerfile
-    depends_on:
-    - db
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     image: phonebook.webapi

@@ -24,7 +24,7 @@ namespace PhoneBook.Business.Services
         public async Task<List<ContactDTO>> GetAllContacts()
         {
             List<ContactDTO> contactDetails = new List<ContactDTO>();
-            List<Customer> customers = await _dbConext.Customers.ToListAsync();
+            List<Customer> customers = await _dbConext.Customers.OrderBy(c => c.FirstName).ToListAsync();
 
             if (customers.Count > 0)
             {
@@ -215,7 +215,7 @@ namespace PhoneBook.Business.Services
 
             if (customers.Count > 0)
             {
-                List<Customer> uniqueCustomers = customers.Distinct().ToList();
+                List<Customer> uniqueCustomers = customers.Distinct().OrderBy(c => c.FirstName).ToList();
                 foreach (var customer in uniqueCustomers)
                 {
                     if (customer != null)

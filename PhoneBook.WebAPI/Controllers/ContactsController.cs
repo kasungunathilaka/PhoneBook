@@ -31,11 +31,11 @@ namespace PhoneBook.WebAPI.Controllers
                 List<ContactDTO> contacts = new List<ContactDTO>();
                 contacts = await _service.GetAllContacts();
 
-                if (contacts == null)
+                if (contacts.Count > 0)
                 {
-                    return NotFound("Could not found any contact.");
+                    return Ok(contacts);                    
                 }
-                return Ok(contacts);
+                return NotFound("Could not found any contact.");
             }
             catch (Exception ex)
             {
@@ -52,11 +52,11 @@ namespace PhoneBook.WebAPI.Controllers
                 List<string> contactNames = new List<string>();
                 contactNames = await _service.GetAllContactNames();
 
-                if (contactNames == null)
+                if (contactNames.Count > 0)
                 {
-                    return NotFound("Could not found any contact.");
+                    return Ok(contactNames);                    
                 }
-                return Ok(contactNames);
+                return NotFound("Could not found any contact.");
             }
             catch (Exception ex)
             {
@@ -73,11 +73,11 @@ namespace PhoneBook.WebAPI.Controllers
                 ContactDTO contact = new ContactDTO();
                 contact = await _service.GetContactById(id);
 
-                if (contact == null)
+                if (contact != null)
                 {
-                    return NotFound("Could not found any contact.");
+                    return Ok(contact);
                 }
-                return Ok(contact);
+                return NotFound("Could not found any contact.");                
             }
             catch (Exception ex)
             {
