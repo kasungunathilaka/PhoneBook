@@ -1,8 +1,17 @@
 version: '3'
-
 services:
-  phonebook.webapi:
-    image: phonebook.webapi
-    build:
-      context: .
-      dockerfile: PhoneBook.WebAPI/Dockerfile
+    phonebook.webapi:
+        build: 
+          context: .
+          dockerfile: PhoneBook.WebAPI/Dockerfile
+        ports:
+            - "8000:80"
+        depends_on:
+            - db
+    db:
+        image: "microsoft/mssql-server-linux:latest"
+        environment:
+            SA_PASSWORD: "Qweasd123#"
+            ACCEPT_EULA: "Y"
+        ports:
+        - "1401:1433"

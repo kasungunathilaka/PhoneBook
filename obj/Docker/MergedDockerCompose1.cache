@@ -18,6 +18,7 @@ services:
       com.microsoft.visualstudio.debuggee.workingdirectory: /app
     ports:
     - 80/tcp
+    - 8000:80/tcp
     volumes:
     - D:\Workspace\PhoneBook\PhoneBook.WebAPI:/app:rw
     - C:\Users\kasung\vsdbg\vs2017u5:/remote_debugger:ro

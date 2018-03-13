@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>8fb58ed5-ab78-4abd-9399-a4647c0a4abe</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://localhost:{ServicePort}/api/values</DockerServiceUrl>
+    <DockerServiceUrl>http://localhost:{ServicePort}/api/contacts</DockerServiceUrl>
     <DockerServiceName>phonebook.webapi</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
