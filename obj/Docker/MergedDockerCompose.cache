@@ -1,8 +1,17 @@
 services:
+  db:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: Qweasd123#
+    image: microsoft/mssql-server-linux:latest
+    ports:
+    - 1401:1433/tcp
   phonebook.webapi:
     build:
       context: D:\Workspace\PhoneBook
       dockerfile: PhoneBook.WebAPI/Dockerfile
+    depends_on:
+    - db
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     ports:
